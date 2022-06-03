@@ -7,6 +7,7 @@
   <license>Apache License 2.0</license>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
+  <buildtool_depend>isuzu_sensor_description</buildtool_depend>
 
   <exec_depend>isuzu_common_sensor_launch</exec_depend>
   <exec_depend>gnss_poser</exec_depend>
