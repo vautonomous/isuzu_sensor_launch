@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>isuzu_sensor_kit_launch</name>
+  <name>isuzu_sensor_launch</name>
   <version>0.1.0</version>
-  <description>The isuzu_sensor_kit_launch package</description>
+  <description>The isuzu_sensor_launch package</description>
   <maintainer email="sena@leodrive.ai">Sena Golcuk</maintainer>
   <license>Apache License 2.0</license>
 

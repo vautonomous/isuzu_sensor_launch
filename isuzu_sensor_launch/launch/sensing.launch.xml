@@ -4,14 +4,9 @@
   <arg name="use_pointcloud_container" default="false" description="launch pointcloud container"/>
   <arg name="pointcloud_container_name" default="pointcloud_container"/>
 
-  <include file="$(find-pkg-share global_parameter_loader)/launch/global_params.launch.py">
-    <arg name="use_sim_time" value="false"/>
-    <arg name="vehicle_model" value="$(var vehicle_model)"/>
-  </include>
-
   <group>
     <!-- LiDAR Driver -->
-    <include file="$(find-pkg-share isuzu_sensor_kit_launch)/launch/lidar.launch.xml">
+    <include file="$(find-pkg-share isuzu_sensor_launch)/launch/lidar.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)"/>
       <arg name="vehicle_param_file" value="$(find-pkg-share $(var vehicle_model)_description)/config/vehicle_info.param.yaml"/>
       <arg name="vehicle_mirror_param_file" value="$(find-pkg-share $(var vehicle_model)_description)/config/mirror.param.yaml"/>
@@ -20,17 +15,17 @@
     </include>
 
     <!-- Camera Driver -->
-    <!-- <include file="$(find-pkg-share isuzu_sensor_kit_launch)/launch/camera.launch.xml">
+    <!-- <include file="$(find-pkg-share isuzu_sensor_launch)/launch/camera.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)" />
     </include> -->
 
     <!-- IMU Driver -->
-    <!-- <include file="$(find-pkg-share isuzu_sensor_kit_launch)/launch/imu.launch.xml">
+    <!-- <include file="$(find-pkg-share isuzu_sensor_launch)/launch/imu.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)"/>
     </include> -->
 
     <!-- GNSS Driver -->
-    <!-- <include file="$(find-pkg-share isuzu_sensor_kit_launch)/launch/gnss.launch.xml">
+    <!-- <include file="$(find-pkg-share isuzu_sensor_launch)/launch/gnss.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)"/>
     </include> -->
   </group>
