@@ -98,6 +98,7 @@
     />
 
     <!-- gnss-ins -->
+    <!--
     <xacro:imu_macro
             name="gnss_ins"
             parent="sensor_kit_base_link"
@@ -110,8 +111,10 @@
             yaw="${calibration['sensor_kit_base_link']['gnss_ins']['yaw']}"
             fps="100"
     />
+    -->
 
     <!-- gnss-ins corrected -->
+    <!--
     <xacro:imu_macro
             name="gnss_ins_corrected"
             parent="sensor_kit_base_link"
@@ -124,6 +127,22 @@
             yaw="${calibration['sensor_kit_base_link']['gnss_ins_corrected']['yaw']}"
             fps="100"
     />
+    -->
+
+        <!-- gnss-ins test -->
+        <xacro:imu_macro
+                name="gnss_ins"
+                parent="sensor_kit_base_link"
+                namespace=""
+                x="${calibration['sensor_kit_base_link']['gnss_ins']['x']}"
+                y="${calibration['sensor_kit_base_link']['gnss_ins']['y']}"
+                z="${calibration['sensor_kit_base_link']['gnss_ins']['z']}"
+                roll="${calibration['sensor_kit_base_link']['gnss_ins']['roll']}"
+                pitch="${calibration['sensor_kit_base_link']['gnss_ins']['pitch']}"
+                yaw="${calibration['sensor_kit_base_link']['gnss_ins']['yaw']}"
+                fps="100"
+        />
+
 
 
   </xacro:macro>
