@@ -14,6 +14,12 @@
       <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
     </include>
 
+    <!-- Vehicle Velocity Converter  -->
+    <include file="$(find-pkg-share vehicle_velocity_converter)/launch/vehicle_velocity_converter.launch.xml">
+      <arg name="input_vehicle_velocity_topic" value="/vehicle/status/velocity_status"/>
+      <arg name="output_twist_with_covariance" value="/sensing/vehicle_velocity_converter/twist_with_covariance"/>
+    </include>
+
     <!-- Camera Driver -->
     <!-- <include file="$(find-pkg-share isuzu_sensor_launch)/launch/camera.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)" />
