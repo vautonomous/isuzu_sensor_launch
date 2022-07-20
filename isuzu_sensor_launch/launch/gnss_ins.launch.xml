@@ -1,0 +1,44 @@
+<launch>
+  <arg name="launch_driver" default="true"/>
+  <arg name="coordinate_system" default="4" description="0:UTM, 1:MGRS, 2:PLANE 3:LOCAL WGS84 4: LOCAL UTM"/>
+
+  <group>
+    <push-ros-namespace namespace="gnss"/>
+
+    <!-- Switch topic name -->
+    <let name="navsatfix_topic_name" value="/applanix/lvx_client/gnss/fix"/>
+    <let name="autoware_orientation_topic_name" value="/applanix/lvx_client/autoware_orientation"/>
+
+
+    <!-- GNSS-INS Driver -->
+    <include file="$(find-pkg-share applanix_driver)/launch/lvx_client.launch.py">
+      <arg name="config" value="$(find-pkg-share applanix_driver)/config/lvx_client_params.yaml"/>
+    </include>
+
+
+    <!-- NavSatFix to UTM Pose -->
+    <include file="$(find-pkg-share gnss_poser)/launch/gnss_poser.launch.xml">
+      <arg name="input_topic_fix" value="$(var navsatfix_topic_name)"/>
+      <arg name="input_topic_orientation" value="$(var autoware_orientation_topic_name)"/>
+
+      <arg name="output_topic_gnss_pose" value="pose"/>
+      <arg name="output_topic_gnss_pose_cov" value="pose_with_covariance"/>
+      <arg name="output_topic_gnss_fixed" value="fixed"/>
+
+      <arg name="coordinate_system" value="$(var coordinate_system)"/>
+
+      <arg name="gnss_frame" value="gnss_link"/>
+    </include>
+
+  </group>
+
+  <group>
+    <push-ros-namespace namespace="imu"/>
+
+    <include file="$(find-pkg-share imu_corrector)/launch/imu_corrector.launch.xml">
+      <arg name="input_topic" value="/applanix/lvx_client/imu_data"/>
+      <arg name="output_topic" value="imu_data"/>
+      <arg name="param_file" value="$(find-pkg-share individual_params)/config/$(env VEHICLE_ID default)/sample_sensor_kit/imu_corrector.param.yaml"/>
+    </include>
+  </group>
+</launch>
