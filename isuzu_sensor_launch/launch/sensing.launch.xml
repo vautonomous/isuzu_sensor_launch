@@ -25,7 +25,7 @@
 
 
     <!-- Camera Driver -->
-    <!-- <include file="$(find-pkg-share isuzu_sensor_launch)/launch/camera.launch.xml">
+    <include file="$(find-pkg-share isuzu_sensor_launch)/launch/camera.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)" />
     </include> -->
 
@@ -38,8 +38,6 @@
     <include file="$(find-pkg-share isuzu_sensor_launch)/launch/gnss_ins.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)"/>
     </include>
-
-
 
   </group>
 
