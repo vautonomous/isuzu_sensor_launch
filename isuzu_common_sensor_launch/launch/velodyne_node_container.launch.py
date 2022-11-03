@@ -171,6 +171,10 @@ def launch_setup(context, *args, **kwargs):
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=nodes,
+        output={
+            'stdout': 'screen',
+            'stderr': 'screen',
+        }
     )
 
     driver_component = ComposableNode(
@@ -252,7 +256,9 @@ def generate_launch_description():
         "container_executable",
         "component_container",
         condition=UnlessCondition(LaunchConfiguration("use_multithread")),
+
     )
+
 
     set_container_mt_executable = SetLaunchConfiguration(
         "container_executable",

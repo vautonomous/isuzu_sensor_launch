@@ -12,7 +12,7 @@
 
     <!-- GNSS-INS Driver -->
     <include file="$(find-pkg-share applanix_driver)/launch/lvx_client.launch.py">
-      <arg name="config" value="$(find-pkg-share applanix_driver)/config/lvx_client_params.yaml"/>
+      <arg name="config" value="$(find-pkg-share applanix_driver)/config/lvx_client_params.param.yaml"/>
     </include>
 
 
