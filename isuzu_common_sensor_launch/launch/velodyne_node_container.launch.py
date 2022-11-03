@@ -138,13 +138,14 @@ def launch_setup(context, *args, **kwargs):
 
     nodes.append(
         ComposableNode(
-            package="velodyne_pointcloud",
-            plugin="velodyne_pointcloud::Interpolate",
-            name="velodyne_interpolate_node",
+            package="pointcloud_preprocessor",
+            plugin="pointcloud_preprocessor::DistortionCorrectorComponent",
+            name="distortion_corrector_node",
             remappings=[
-                ("velodyne_points_ex", "mirror_cropped/pointcloud_ex"),
-                ("velodyne_points_interpolate", "rectified/pointcloud"),
-                ("velodyne_points_interpolate_ex", "rectified/pointcloud_ex"),
+                ("~/input/twist", "/sensing/vehicle_velocity_converter/twist_with_covariance"),
+                ("~/input/imu", "/sensing/imu/imu_data"),
+                ("~/input/pointcloud", "mirror_cropped/pointcloud_ex"),
+                ("~/output/pointcloud", "rectified/pointcloud_ex"),
             ],
             extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
         )
@@ -163,18 +164,20 @@ def launch_setup(context, *args, **kwargs):
         )
     )
 
-    # set container to run all required components in the same process
     container = ComposableNodeContainer(
-        # need unique name, otherwise all processes in same container and the node names then clash
-        name="velodyne_node_container",
+        name=LaunchConfiguration("container_name"),
         namespace="pointcloud_preprocessor",
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=nodes,
-        output={
-            'stdout': 'screen',
-            'stderr': 'screen',
-        }
+        condition=UnlessCondition(LaunchConfiguration("use_pointcloud_container")),
+        output="screen",
+    )
+
+    component_loader = LoadComposableNodes(
+        composable_node_descriptions=nodes,
+        target_container=LaunchConfiguration("container_name"),
+        condition=IfCondition(LaunchConfiguration("use_pointcloud_container")),
     )
 
     driver_component = ComposableNode(
@@ -201,15 +204,19 @@ def launch_setup(context, *args, **kwargs):
         ],
     )
 
-    # one way to add a ComposableNode conditional on a launch argument to a
-    # container. The `ComposableNode` itself doesn't accept a condition
-    loader = LoadComposableNodes(
-        composable_node_descriptions=[driver_component],
-        target_container=container,
-        condition=launch.conditions.IfCondition(LaunchConfiguration("launch_driver")),
+    target_container = (
+        container
+        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
+        else LaunchConfiguration("container_name")
     )
 
-    return [container, loader]
+    driver_component_loader = LoadComposableNodes(
+        composable_node_descriptions=[driver_component],
+        target_container=target_container,
+        condition=IfCondition(LaunchConfiguration("launch_driver")),
+    )
+
+    return [container, component_loader, driver_component_loader]
 
 
 def generate_launch_description():
@@ -251,14 +258,14 @@ def generate_launch_description():
     )
     add_launch_arg("use_multithread", "False", "use multithread")
     add_launch_arg("use_intra_process", "False", "use ROS2 component container communication")
+    add_launch_arg("use_pointcloud_container", "False")
+    add_launch_arg("container_name", "velodyne_node_container")
 
     set_container_executable = SetLaunchConfiguration(
         "container_executable",
         "component_container",
         condition=UnlessCondition(LaunchConfiguration("use_multithread")),
-
     )
-
 
     set_container_mt_executable = SetLaunchConfiguration(
         "container_executable",
