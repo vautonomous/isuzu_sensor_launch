@@ -19,7 +19,7 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </link>
     <!-- sensor -->
-    <xacro:property name="calibration" value="${load_yaml('$(arg config_dir)/sensor_kit_calibration.yaml')}"/>
+    <xacro:property name="calibration" value="${xacro.load_yaml('$(arg config_dir)/sensor_kit_calibration.yaml')}"/>
     <!-- lidar -->
     <xacro:VLP-16 parent="sensor_kit_base_link" name="velodyne_front" topic="/velodyne_points" hz="10" samples="220" gpu="$(arg gpu)">
       <origin
