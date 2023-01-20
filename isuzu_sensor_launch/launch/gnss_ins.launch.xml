@@ -1,6 +1,6 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="coordinate_system" default="4" description="0:UTM, 1:MGRS, 2:PLANE 3:LOCAL WGS84 4: LOCAL UTM"/>
+  <arg name="coordinate_system" default="1" description="0:UTM, 1:MGRS, 2:PLANE 3:LOCAL WGS84 4: LOCAL UTM"/>
 
   <group>
     <push-ros-namespace namespace="gnss"/>
