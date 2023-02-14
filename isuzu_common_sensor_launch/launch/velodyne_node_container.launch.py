@@ -114,27 +114,27 @@ def launch_setup(context, *args, **kwargs):
         )
     )
 
-    mirror_info = get_vehicle_mirror_info(context)
-    cropbox_parameters["min_x"] = mirror_info["min_longitudinal_offset"]
-    cropbox_parameters["max_x"] = mirror_info["max_longitudinal_offset"]
-    cropbox_parameters["min_y"] = mirror_info["min_lateral_offset"]
-    cropbox_parameters["max_y"] = mirror_info["max_lateral_offset"]
-    cropbox_parameters["min_z"] = mirror_info["min_height_offset"]
-    cropbox_parameters["max_z"] = mirror_info["max_height_offset"]
-
-    nodes.append(
-        ComposableNode(
-            package="pointcloud_preprocessor",
-            plugin="pointcloud_preprocessor::CropBoxFilterComponent",
-            name="crop_box_filter_mirror",
-            remappings=[
-                ("input", "self_cropped/pointcloud_ex"),
-                ("output", "mirror_cropped/pointcloud_ex"),
-            ],
-            parameters=[cropbox_parameters],
-            extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-        )
-    )
+    # mirror_info = get_vehicle_mirror_info(context)
+    # cropbox_parameters["min_x"] = mirror_info["min_longitudinal_offset"]
+    # cropbox_parameters["max_x"] = mirror_info["max_longitudinal_offset"]
+    # cropbox_parameters["min_y"] = mirror_info["min_lateral_offset"]
+    # cropbox_parameters["max_y"] = mirror_info["max_lateral_offset"]
+    # cropbox_parameters["min_z"] = mirror_info["min_height_offset"]
+    # cropbox_parameters["max_z"] = mirror_info["max_height_offset"]
+    #
+    # nodes.append(
+    #     ComposableNode(
+    #         package="pointcloud_preprocessor",
+    #         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
+    #         name="crop_box_filter_mirror",
+    #         remappings=[
+    #             ("input", "self_cropped/pointcloud_ex"),
+    #             ("output", "mirror_cropped/pointcloud_ex"),
+    #         ],
+    #         parameters=[cropbox_parameters],
+    #         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    #     )
+    # )
 
     nodes.append(
         ComposableNode(
@@ -144,7 +144,7 @@ def launch_setup(context, *args, **kwargs):
             remappings=[
                 ("~/input/twist", "/sensing/vehicle_velocity_converter/twist_with_covariance"),
                 ("~/input/imu", "/sensing/imu/imu_data"),
-                ("~/input/pointcloud", "mirror_cropped/pointcloud_ex"),
+                ("~/input/pointcloud", "self_cropped/pointcloud_ex"),
                 ("~/output/pointcloud", "rectified/pointcloud_ex"),
             ],
             extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
