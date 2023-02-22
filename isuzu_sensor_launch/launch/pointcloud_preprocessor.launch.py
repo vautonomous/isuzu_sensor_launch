@@ -55,9 +55,9 @@ def launch_setup(context, *args, **kwargs):
             ("output", "voxel_grid_downsample_filter_rviz/pointcloud"),
         ],
         parameters=[
-            {"voxel_size_x": 0.15},
-            {"voxel_size_y": 0.15},
-            {"voxel_size_z": 0.15}
+            {"voxel_size_x": 0.25},
+            {"voxel_size_y": 0.25},
+            {"voxel_size_z": 0.25}
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
