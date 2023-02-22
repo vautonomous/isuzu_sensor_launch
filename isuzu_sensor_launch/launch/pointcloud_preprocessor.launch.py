@@ -46,6 +46,22 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
+    voxel_grid_downsample_component = ComposableNode(
+        package="pointcloud_preprocessor",
+        plugin="pointcloud_preprocessor::VoxelGridDownsampleFilterComponent",
+        name="voxel_grid_downsample_filter_rviz",
+        remappings=[
+            ("input", "concatenated/pointcloud"),
+            ("output", "voxel_grid_downsample_filter_rviz/pointcloud"),
+        ],
+        parameters=[
+            {"voxel_size_x": 0.15},
+            {"voxel_size_y": 0.15},
+            {"voxel_size_z": 0.15}
+        ],
+        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    )
+
     # set container to run all required components in the same process
     container = ComposableNodeContainer(
         name=LaunchConfiguration("container_name"),
@@ -65,7 +81,7 @@ def launch_setup(context, *args, **kwargs):
 
     # load concat or passthrough filter
     concat_loader = LoadComposableNodes(
-        composable_node_descriptions=[concat_component],
+        composable_node_descriptions=[concat_component, voxel_grid_downsample_component],
         target_container=target_container,
         condition=IfCondition(LaunchConfiguration("use_concat_filter")),
     )
