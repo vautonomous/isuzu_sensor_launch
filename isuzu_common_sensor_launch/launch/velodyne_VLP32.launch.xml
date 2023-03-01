@@ -5,7 +5,7 @@
   <arg name="model" default="32C"/>
   <arg name="calibration" default="$(find-pkg-share velodyne_pointcloud)/params/VeloView-VLP-32C.yaml"/>
   <arg name="max_range" default="250.0"/>
-  <arg name="min_range" default="0.5"/>
+  <arg name="min_range" default="0.3"/>
   <arg
     name="invalid_intensity"
     default="[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]"
